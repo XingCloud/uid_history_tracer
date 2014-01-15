@@ -1,4 +1,7 @@
 *.class
+# Intellij idea
+*.iml
+.idea/*
 
 # Package Files #
 *.jar
