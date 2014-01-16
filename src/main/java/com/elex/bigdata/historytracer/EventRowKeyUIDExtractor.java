@@ -4,7 +4,6 @@ import static com.elex.bigdata.historytracer.RowKeyUtils.MAX_BYTE;
 import static com.elex.bigdata.historytracer.RowKeyUtils.extractUid;
 
 import com.elex.bigdata.historytracer.model.UID;
-import com.xingcloud.basic.concurrent.BlockingXQueue;
 import org.apache.hadoop.hbase.client.HTablePool;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
@@ -86,7 +85,7 @@ public class EventRowKeyUIDExtractor implements Runnable {
     try {
       pooledHTable = manager.getHTable(tableName);
       ResultScanner rs = pooledHTable.getScanner(scan);
-      LOGGER.info("[UID-EXTRACTOR] - Begin scanning.");
+      LOGGER.info("[UID-EXTRACTOR] - Table opend, begin scanning(" + id + ").");
       for (Result r : rs) {
         longByte = extractUid(r.getRow());
         if (longByte == null) {

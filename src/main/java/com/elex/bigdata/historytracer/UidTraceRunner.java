@@ -4,7 +4,7 @@ import static com.elex.bigdata.historytracer.conf.HbaseNode.HBASE_NODES;
 
 import com.elex.bigdata.historytracer.conf.HbaseNode;
 import com.elex.bigdata.historytracer.model.UID;
-import com.xingcloud.basic.concurrent.BlockingXQueue;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -56,4 +56,17 @@ public class UidTraceRunner {
       "[UID-TRACE-RUNNER] - All uid dumped(Table=" + table + ", Event=" + event + ", date=" + date + ") to file " + uidFileOutput);
   }
 
+  public static void main(String[] args) throws InterruptedException {
+    if (ArrayUtils.isEmpty(args) || args.length < 4) {
+      LOGGER.info("[RUNNER] - Must assign table, event, date and output uid file path.");
+      System.exit(1);
+    }
+    String table = args[0];
+    String date = args[1];
+    String event = args[2];
+    String output = args[3];
+
+    UidTraceRunner runner = new UidTraceRunner(table, event, date, output);
+    runner.run();
+  }
 }
