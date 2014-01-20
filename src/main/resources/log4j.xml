@@ -10,9 +10,19 @@
     </layout>
   </appender>
 
-  <root>
+  <logger name="com.elex.bigdata.historytracer">
     <level value="info" />
     <appender-ref ref="CONSOLE" />
-  </root>
+  </logger>
+  <logger name="com.xingcloud">
+    <level value="info" />
+    <appender-ref ref="CONSOLE" />
+  </logger>
+
+
+  <!--<root>-->
+  <!--<level value="info" />-->
+  <!--<appender-ref ref="CONSOLE" />-->
+  <!--</root>-->
 
 </log4j:configuration>

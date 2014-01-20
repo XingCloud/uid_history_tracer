@@ -7,6 +7,8 @@ import com.elex.bigdata.historytracer.model.UID;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -46,7 +48,6 @@ public class UidTraceRunner {
       extractors.add(extractor);
     }
 
-    Thread t;
     for (EventRowKeyUIDExtractor ex : extractors) {
       new Thread(ex, "UidExtractThread@" + ex.getId()).start();
     }
@@ -68,5 +69,15 @@ public class UidTraceRunner {
 
     UidTraceRunner runner = new UidTraceRunner(table, event, date, output);
     runner.run();
+    File file = new File(output);
+    String fileName = file.getName(), hdfsFile = "/user/hadoop/uid_trace/" + fileName;
+
+    try {
+      FileUtils.copy2HDFS(output, hdfsFile);
+    } catch (IOException e) {
+      LOGGER.error("[RUNNER] - Copy file failed.", e);
+      System.exit(1);
+    }
+    LOGGER.info("[RUNNER] - Local uid file(" + output + ") copied to HDFS(" + hdfsFile + ")");
   }
 }
