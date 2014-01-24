@@ -42,7 +42,7 @@ public class UidTraceRunner {
     AtomicInteger producerCount = new AtomicInteger(HBASE_NODES.length);
     LinkedBlockingQueue<UID> uidBlockingXQueue = new LinkedBlockingQueue<>();
     for (HbaseNode hbaseNode : HBASE_NODES) {
-      manager = new HBaseResourceManager(hbaseNode.getHost(), hbaseNode.getPort());
+      manager = new HBaseResourceManager(hbaseNode.getRootDir(),hbaseNode.getHost(), hbaseNode.getPort());
       extractor = new EventRowKeyUIDExtractor(manager, uidBlockingXQueue, signal, producerCount, hbaseNode.toString(),
                                               table, date, event);
       extractors.add(extractor);

@@ -15,12 +15,18 @@ public class HbaseNode {
 
   private int id;
 
+  private String rootDir;
+
   private String host;
 
   private int port;
 
   public int getId() {
     return id;
+  }
+
+  public String getRootDir() {
+    return rootDir;
   }
 
   public String getHost() {
@@ -31,8 +37,9 @@ public class HbaseNode {
     return port;
   }
 
-  private HbaseNode(int id, String host, int port) {
+  private HbaseNode(int id, String rootDir,String host, int port) {
     this.id = id;
+    this.rootDir=rootDir;
     this.host = host;
     this.port = port;
   }
@@ -42,23 +49,24 @@ public class HbaseNode {
     Configuration config = Config.createConfig(multiHbaseConfFile, Config.ConfigFormat.properties);
     String nodeString = config.getString("hbase.nodes");
     String[] nodeStringArray = nodeString.split("##");
-    int a, b;
-    char c1 = '#', c2 = ':';
-    String idString, host, portString;
+    String idString, rootDir,host, portString;
     HbaseNode[] nodes = new HbaseNode[nodeStringArray.length];
     for (int i = 0; i < nodeStringArray.length; i++) {
-      a = nodeStringArray[i].indexOf(c1);
-      b = nodeStringArray[i].indexOf(c2);
-      idString = nodeStringArray[i].substring(0, a);
-      host = nodeStringArray[i].substring(a + 1, b);
-      portString = nodeStringArray[i].substring(b + 1);
-      nodes[i] = new HbaseNode(Integer.valueOf(idString), host, Integer.valueOf(portString));
+      String [] infos=nodeStringArray[i].split("#");
+      idString = infos[0];
+      rootDir=infos[1];
+      String [] address=infos[2].split(":");
+      host =address[0];
+      portString = address[1];
+      nodes[i] = new HbaseNode(Integer.valueOf(idString),rootDir, host, Integer.valueOf(portString));
       LOGGER.info("[HBASE-NODE] - Node inited - " + nodes[i]);
     }
     return nodes;
   }
 
   @Override public String toString() {
-    return "HbaseNode(" + id + "@" + host + ":" + port + ')';
+    return "HbaseNode(" + id + "#"+rootDir+"@" + host + ":" + port + ')';
   }
+
+
 }

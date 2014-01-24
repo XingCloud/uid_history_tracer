@@ -8,7 +8,7 @@
         <name>hbase.cluster.distributed</name>
         <value>true</value>
     </property>
-    <!--
+
     <property>
         <name>hbase.zookeeper.quorum</name>
         <value>datanode1</value>
@@ -16,6 +16,11 @@
     <property>
         <name>hbase.zookeeper.property.clientPort</name>
         <value>3181</value>
+    </property>
+    <!--
+    <property>
+        <name>zookeeper.znode.parent</name>
+        <value>/hbase</value>
     </property>
     -->
     <property skipInDoc="true">

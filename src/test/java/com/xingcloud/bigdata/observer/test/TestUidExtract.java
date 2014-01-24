@@ -43,7 +43,7 @@ public class TestUidExtract {
 
   @Test
   public void test() throws InterruptedException {
-    HBaseResourceManager manager = new HBaseResourceManager("datanode1", 3181);
+    HBaseResourceManager manager = new HBaseResourceManager("hdfs://namenode:19000/datanode1","datanode1", 3181);
     CountDownLatch signal = new CountDownLatch(2);
     String tableName = "deu_age", date = "20140108", event = "visit";
     LinkedBlockingQueue<UID> queue = new LinkedBlockingQueue<>();

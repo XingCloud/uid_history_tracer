@@ -56,7 +56,7 @@ public class TestHbaseResourcesManager {
     String event;
     byte[] rowkeyBytes;
 
-    HBaseResourceManager manager = new HBaseResourceManager("datanode0", 3181);
+    HBaseResourceManager manager = new HBaseResourceManager("hdfs://namenode:19000/datanode0","datanode0", 3181);
     HTablePool.PooledHTable pooledHTable = manager.getHTable("deu_age");
     List<Put> puts = new ArrayList<>(eventCount);
     Put put;

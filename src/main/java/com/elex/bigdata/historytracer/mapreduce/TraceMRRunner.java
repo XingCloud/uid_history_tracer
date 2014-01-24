@@ -2,10 +2,14 @@ package com.elex.bigdata.historytracer.mapreduce;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.hbase.mapreduce.TableInputFormat;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.TextInputFormat;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.log4j.Logger;
 
@@ -19,11 +23,13 @@ public class TraceMRRunner {
 
   public static void main(String[] args) throws IOException {
     String hdfsIn = args[0], hdfsOut = args[1];
-    Job job = Job.getInstance(new Configuration());
+    Configuration conf=new Configuration();
+    Job job = Job.getInstance(conf);
     job.setJarByClass(TraceMRRunner.class);
     job.setJobName("UidTraceJob");
     job.setOutputKeyClass(Text.class);
     job.setOutputValueClass(NullWritable.class);
+    job.setMapOutputValueClass(IntWritable.class);
     job.setMapperClass(LogLineDistinctMapper.class);
     job.setReducerClass(LogLineDistinctReducer.class);
     FileInputFormat.setInputPaths(job, new Path(hdfsIn));
