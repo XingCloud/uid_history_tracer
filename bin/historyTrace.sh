@@ -13,6 +13,8 @@
  java -cp ${basedir}/target/UIDHistoryTracer-jar-with-dependencies.jar com.elex.bigdata.historytracer.UidTraceRunner \
  ${table} ${day} ${event} ${localOutPutFile}
 
+ echo "hadoop fs -copyFromLocal ${localOutPutFile} ${hdfsBaseDir}/`basename ${localOutPutFile}`"
+ hadoop fs -copyFromLocal ${localOutPutFile} ${hdfsBaseDir}/`basename ${localOutPutFile}`
 
  # get uniq Uids
  hdfsIn=${rootDir}${hdfsBaseDir}/`basename ${localOutPutFile}`

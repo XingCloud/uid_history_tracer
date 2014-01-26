@@ -72,12 +72,12 @@ public class UidTraceRunner {
     File file = new File(output);
     String fileName = file.getName(), hdfsFile = "/user/hadoop/uid_trace/" + fileName;
 
-    try {
-      FileUtils.copy2HDFS(output, hdfsFile);
-    } catch (IOException e) {
-      LOGGER.error("[RUNNER] - Copy file failed.", e);
-      System.exit(1);
-    }
-    LOGGER.info("[RUNNER] - Local uid file(" + output + ") copied to HDFS(" + hdfsFile + ")");
+//    try {
+//      FileUtils.copy2HDFS(output, hdfsFile);
+//    } catch (IOException e) {
+//      LOGGER.error("[RUNNER] - Copy file failed.", e);
+//      System.exit(1);
+//    }
+//    LOGGER.info("[RUNNER] - Local uid file(" + output + ") copied to HDFS(" + hdfsFile + ")");
   }
 }
