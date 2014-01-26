@@ -4,7 +4,7 @@
 <configuration>
   <property>
     <name>mapred.job.tracker</name>
-    <value>namenode:19001</value>
+    <value>ELEX-LA-WEB1:19001</value>
   </property>
   <property>   
     <name>ipc.server.listen.queue.size</name>

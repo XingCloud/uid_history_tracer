@@ -2,7 +2,7 @@
 <configuration>
     <property>
         <name>hbase.rootdir</name>
-        <value>hdfs://namenode:19000/datanode1</value>
+        <value>hdfs://ELEX-LA-WEB1:19000/datanode1</value>
     </property>
     <property>
         <name>hbase.cluster.distributed</name>
