@@ -37,10 +37,10 @@ public class UidJoinReducer extends Reducer<Text,Text,Text,Text> {
       builder.append(event+"\t");
     String totalEvents=builder.toString();
      if(hasTag && events.size()>0){
-       logger.info("join success. uid is "+uid.toString()+" events "+totalEvents);
+       //logger.info("join success. uid is "+uid.toString()+" events "+totalEvents);
        context.write(uid,new Text(totalEvents));
      }else {
-       logger.info("join failure. uid is "+uid.toString()+(hasTag?"Tag-Uid":" events "+totalEvents));
+//        logger.info("join failure. uid is "+uid.toString()+(hasTag?"Tag-Uid":" events "+totalEvents));
      }
   }
 }
