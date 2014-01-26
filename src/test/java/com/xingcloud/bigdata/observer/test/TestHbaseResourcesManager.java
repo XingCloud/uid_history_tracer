@@ -58,7 +58,7 @@ public class TestHbaseResourcesManager {
 
     HBaseResourceManager manager = new HBaseResourceManager("hdfs://namenode:19000/datanode0","datanode0", 3181);
     HTablePool.PooledHTable pooledHTable = manager.getHTable("deu_age");
-    List<Put> puts = new ArrayList<>(eventCount);
+    List<Put> puts = new ArrayList<Put>(eventCount);
     Put put;
     long val;
     for (int j = 0; j < batch; j++) {

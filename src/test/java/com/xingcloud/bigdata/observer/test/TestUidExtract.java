@@ -46,7 +46,7 @@ public class TestUidExtract {
     HBaseResourceManager manager = new HBaseResourceManager("hdfs://namenode:19000/datanode1","datanode1", 3181);
     CountDownLatch signal = new CountDownLatch(2);
     String tableName = "deu_age", date = "20140108", event = "visit";
-    LinkedBlockingQueue<UID> queue = new LinkedBlockingQueue<>();
+    LinkedBlockingQueue<UID> queue = new LinkedBlockingQueue<UID>();
     AtomicInteger producerCount = new AtomicInteger(1);
     EventRowKeyUIDExtractor uidExtractor = new EventRowKeyUIDExtractor(manager, queue, signal, producerCount, "001",
                                                                        tableName, date, event);
@@ -55,7 +55,7 @@ public class TestUidExtract {
     t.start();
     t = new Thread(new UIDWriter("Writer1", filePath, queue, signal, producerCount), "uid-print-thread");
     t.start();
-    t = new Thread(new QueueMonitor<>(queue, true));
+    t = new Thread(new QueueMonitor<UID>(queue, true));
     t.start();
     signal.await();
     System.out.println("All done.");
