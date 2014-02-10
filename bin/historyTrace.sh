@@ -5,7 +5,13 @@
  localOutPutFile=$4
  basedir=`dirname $0`/..
  #getUid
- rootDir="hdfs://namenode:19000"
+ env=$5
+ if [ "production"=${env} ]
+ then
+    rootDir="hdfs://ELEX-LA-WEB1:19000"
+ else
+    rootDir="hdfs://namenode:19000"
+ fi
  hdfsBaseDir="/user/hadoop/uid_trace"
 
  echo "java -cp ${basedir}/target/UIDHistoryTracer-jar-with-dependencies.jar com.elex.bigdata.historytracer.UidTraceRunner \
