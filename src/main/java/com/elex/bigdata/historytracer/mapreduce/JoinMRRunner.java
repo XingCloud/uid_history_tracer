@@ -15,6 +15,10 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 
 
@@ -47,14 +51,24 @@ public class JoinMRRunner implements Runnable {
     conf.set("hbase.rootdir", node.getRootDir());
     conf.set("hbase.zookeeper.quorum", node.getHost());
     conf.setInt("hbase.zookeeper.property.clientPort", node.getPort());
+    if(System.getProperty("dayRange")!=null)
+       dayRange=Integer.parseInt(System.getProperty("dayRange"));
     try {
       Job job = Job.getInstance(conf);
       job.setJarByClass(JoinMRRunner.class);
       job.setJobName("JoinMRRunner");
       Scan scan = new Scan();
       scan.setCaching(5000);
-      String startDay = String.valueOf(Long.parseLong(day) - dayRange);
-      String endDay = String.valueOf(Long.parseLong(day) + 1);
+      // get Start and End day
+      DateFormat format=new SimpleDateFormat("yyyyMMdd");
+      Date date=format.parse(day);
+      Date start=new Date(date.getTime());
+      start.setDate(date.getDate()-dayRange);
+      Date end=new Date(date.getTime());
+      end.setDate(date.getDate()+1);
+      String startDay = format.format(start);
+      String endDay = format.format(end);
+      //set start stop Row
       scan.setStartRow(Bytes.toBytes(startDay));
       scan.setStopRow(Bytes.toBytes(endDay));
       logger.info("startDay: " + startDay + " endDay: " + endDay);
@@ -75,7 +89,9 @@ public class JoinMRRunner implements Runnable {
       }
     } catch (IOException e) {
       e.printStackTrace();
-    }finally {
+    } catch (ParseException e) {
+      e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+    } finally {
     }
   }
 }
