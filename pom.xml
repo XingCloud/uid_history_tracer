@@ -9,6 +9,7 @@
     <version>1.0</version>
     <packaging>jar</packaging>
 
+
     <build>
         <finalName>UIDHistoryTracer</finalName>
         <!-- Resources of app -->
@@ -156,6 +157,11 @@
             <groupId>com.xingcloud.xa</groupId>
             <artifactId>confutil</artifactId>
             <version>1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.xingcloud</groupId>
+            <artifactId>uid-transformer</artifactId>
+            <version>1.0</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
