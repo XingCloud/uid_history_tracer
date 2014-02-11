@@ -46,3 +46,5 @@
  finalResultFile=${LogBaseDir}/${table}/${day}/${event}Result.log
  echo "hadoop fs -getmerge ${hdfsBaseDir}/${table}${day}${event}JoinResult/*/*  ${finalResultFile}"
  hadoop fs -getmerge ${hdfsBaseDir}/${table}${day}${event}JoinResult/*/*  ${finalResultFile}
+
+ java -cp  ${basedir}/target/UIDHistoryTracer-jar-with-dependencies.jar com.elex.bigdata.historytracer.TransferUid ${finalResultFile} ${table:4}

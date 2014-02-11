@@ -2,6 +2,7 @@ package com.elex.bigdata.historytracer;
 
 import com.xingcloud.uidtransform.HbaseMysqlUIDTruncator;
 import com.xingcloud.uidtransform.StreamLogUidTransformer;
+import org.apache.log4j.Logger;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -15,15 +16,21 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class TransferUid {
+  private static Logger logger=  Logger.getLogger(TransferUid.class);
   public static void main(String[] args) throws Exception {
+     long start=System.currentTimeMillis();
      // get projectId
-     String projectId=args[2];
+     String projectId=args[1];
      // get uid File
-     String  uidFilePath=args[1];
+     String  uidFilePath=args[0];
      File    uidFile=new File(uidFilePath);
+     logger.info("uidFile path "+uidFile.getPath());
      // create origUidFile
      String name =uidFile.getName();
-     File origUidFile=new File(uidFile.getParent()+"\\"+"orig"+name);
+     File origUidFile=new File(uidFile.getParent()+"/"+"orig"+name);
+     logger.info("origUidFile path "+origUidFile.getPath());
+
+     int batchSize=50000;
     /*read uidFile and batch(1000 lines) process
        get uid from each line(first field in line terminated with '\t' and add to List<Uid> uids;
        get events connected to uid(other fields in line) and add to List<String> events;
@@ -37,7 +44,7 @@ public class TransferUid {
      BufferedWriter writer=new BufferedWriter(new FileWriter(origUidFile));
      String line;
      List<String> uids=new ArrayList<String>(),events=new ArrayList<String>();
-
+     logger.info("transfer start");
      try{
         while((line=reader.readLine())!=null){
             int index=line.indexOf('\t');
@@ -46,9 +53,9 @@ public class TransferUid {
             String event=line.substring(index+1);
             uids.add(uid);
             events.add(event);
-            if(uids.size()==1000){
+            if(uids.size()==batchSize){
               List<String> origUids=transform(uids,events,projectId);
-              for(int i=0;i<1000;i++){
+              for(int i=0;i<batchSize;i++){
                 writer.write(origUids.get(i)+"\t"+events.get(i));
                 writer.newLine();
               }
@@ -60,6 +67,8 @@ public class TransferUid {
           writer.newLine();
         }
         writer.write(origUids.get(origUids.size()-1)+"\t"+events.get(events.size()-1));
+        logger.info("transfer completed");
+        logger.info("transfer using "+(System.currentTimeMillis()-start)+" ms");
      }catch (IOException e){
         e.printStackTrace();
      }finally {
