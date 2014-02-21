@@ -5,13 +5,8 @@ import static com.elex.bigdata.historytracer.RowKeyUtils.FAMILY_VAL_BYTES;
 
 import com.elex.bigdata.historytracer.HBaseResourceManager;
 import com.elex.bigdata.historytracer.RowKeyUtils;
-import org.apache.hadoop.hbase.KeyValue;
-import org.apache.hadoop.hbase.client.Delete;
 import org.apache.hadoop.hbase.client.HTablePool;
 import org.apache.hadoop.hbase.client.Put;
-import org.apache.hadoop.hbase.client.Result;
-import org.apache.hadoop.hbase.client.ResultScanner;
-import org.apache.hadoop.hbase.client.Scan;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.junit.Test;
 
@@ -29,15 +24,15 @@ import java.util.TimeZone;
 /**
  * User: Z J Wu Date: 14-1-6 Time: 下午2:49 Package: com.xingcloud.bigdata.historytracer.test
  */
-public class TestHbaseResourcesManager {
+public class FakeDataGenerator {
 
   @Test
   public void test() throws IOException, ParseException {
-    String date = "20140105";
+    String date = "20140206";
     SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
     sdf.setTimeZone(TimeZone.getTimeZone("GMT+08:00"));
     long timestamp = sdf.parse(date).getTime();
-    String recordFilePath = "d:/misc/hbase_test/hbase.test.insert." + date;
+    String recordFilePath = "d:/misc/hbase_test/hbase.test.insert." + date + ".log";
     File f = new File(recordFilePath);
     PrintWriter pw = new PrintWriter(new FileWriter(f));
     String[] eventPool = new String[]{"visit.", "pay.", "heartbeat.", "pay.gross.", "pay.fee.", "CS.pri.smite.",
@@ -45,10 +40,11 @@ public class TestHbaseResourcesManager {
                                       "CS.pri.Chakra.Sanctuary", "CS.pri.Chakra.Serenity", "CS.pri.ShadowWord.Pain",
                                       "CS.pri.LeapOfFaith", "CS.pri.HolyWord.Chastise", "CS.pri.GuardianSpirit"
     };
+    eventPool = new String[]{"event_val_test."};
 
     final char tab = '\t';
 
-    int eventCount = 20, batch = 50;
+    int eventCount = 30, batch = 1;
     Random random = new Random();
     int smallUid;
     byte hash;
@@ -64,12 +60,12 @@ public class TestHbaseResourcesManager {
     for (int j = 0; j < batch; j++) {
       for (int i = 0; i < eventCount; i++) {
         ++timestamp;
-        smallUid = random.nextInt(100);
+        smallUid = random.nextInt(5) + 1;
         hash = 2;
         bigUid = RowKeyUtils.hashUid2Long(hash, smallUid);
         event = eventPool[random.nextInt(eventPool.length)];
         rowkeyBytes = RowKeyUtils.buildRowKey(date, event, bigUid);
-        val = random.nextInt(500);
+        val = (random.nextInt(1) + 1) * 10;
         put = new Put(rowkeyBytes);
         put.add(FAMILY_VAL_BYTES, COLUMN_VAL_BYTES, timestamp, Bytes.toBytes(val));
         puts.add(put);
