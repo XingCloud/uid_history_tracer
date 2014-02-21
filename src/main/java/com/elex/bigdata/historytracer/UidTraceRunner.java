@@ -36,13 +36,13 @@ public class UidTraceRunner {
 
   public void run() throws InterruptedException {
     HBaseResourceManager manager;
-    List<EventRowKeyUIDExtractor> extractors = new ArrayList<>(HBASE_NODES.length);
+    List<EventRowKeyUIDExtractor> extractors = new ArrayList<EventRowKeyUIDExtractor>(HBASE_NODES.length);
     EventRowKeyUIDExtractor extractor;
     CountDownLatch signal = new CountDownLatch(HBASE_NODES.length + 1);
     AtomicInteger producerCount = new AtomicInteger(HBASE_NODES.length);
-    LinkedBlockingQueue<UID> uidBlockingXQueue = new LinkedBlockingQueue<>();
+    LinkedBlockingQueue<UID> uidBlockingXQueue = new LinkedBlockingQueue<UID>();
     for (HbaseNode hbaseNode : HBASE_NODES) {
-      manager = new HBaseResourceManager(hbaseNode.getHost(), hbaseNode.getPort());
+      manager = new HBaseResourceManager(hbaseNode.getRootDir(),hbaseNode.getHost(), hbaseNode.getPort());
       extractor = new EventRowKeyUIDExtractor(manager, uidBlockingXQueue, signal, producerCount, hbaseNode.toString(),
                                               table, date, event);
       extractors.add(extractor);
@@ -72,12 +72,12 @@ public class UidTraceRunner {
     File file = new File(output);
     String fileName = file.getName(), hdfsFile = "/user/hadoop/uid_trace/" + fileName;
 
-    try {
-      FileUtils.copy2HDFS(output, hdfsFile);
-    } catch (IOException e) {
-      LOGGER.error("[RUNNER] - Copy file failed.", e);
-      System.exit(1);
-    }
-    LOGGER.info("[RUNNER] - Local uid file(" + output + ") copied to HDFS(" + hdfsFile + ")");
+//    try {
+//      FileUtils.copy2HDFS(output, hdfsFile);
+//    } catch (IOException e) {
+//      LOGGER.error("[RUNNER] - Copy file failed.", e);
+//      System.exit(1);
+//    }
+//    LOGGER.info("[RUNNER] - Local uid file(" + output + ") copied to HDFS(" + hdfsFile + ")");
   }
 }

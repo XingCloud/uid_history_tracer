@@ -19,8 +19,9 @@ public class HBaseResourceManager implements Closeable {
   private final int MAX_POOL_SIZE = 200;
   private final String EVENT_TABLE_SUFFIX = "_deu";
 
-  public HBaseResourceManager(String host, int port) {
+  public HBaseResourceManager(String rootDir,String host, int port) {
     this.conf = HBaseConfiguration.create();
+    conf.set("hbase.rootdir",rootDir);
     conf.set("hbase.zookeeper.quorum", host);
     conf.setInt("hbase.zookeeper.property.clientPort", port);
     this.pool = new HTablePool(this.conf, this.MAX_POOL_SIZE);

@@ -29,10 +29,10 @@ public class TestStreamLogFilter {
     File out = new File("D:/securecrt_files/sof-apptools/" + projectId + "." + event + ".uid." + date + ".log");
     BufferedReader br = new BufferedReader(new FileReader(file));
     PrintWriter pw = new PrintWriter(new FileWriter(out));
-    Set<String> idSet = new HashSet<>(10000);
+    Set<String> idSet = new HashSet<String>(10000);
     String line;
     String[] arr;
-    Set<String> events = new HashSet<>(10);
+    Set<String> events = new HashSet<String>(10);
     while ((line = br.readLine()) != null) {
       arr = line.split("\t");
       if (projectId.equals(arr[0])) {
